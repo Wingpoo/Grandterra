@@ -4,6 +4,8 @@
 #include "MainMenu/MainMenuUserWidget.h"
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "GameFramework/PlayerController.h"
 
 void UMainMenuUserWidget::NativeConstruct()
 {
@@ -118,4 +120,6 @@ void UMainMenuUserWidget::OptionsSystemSettingsButtonClicked()
 
 void UMainMenuUserWidget::QuitQuitButtonClicked()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Green, "Clicked");
+	UKismetSystemLibrary::QuitGame(GetWorld(), GetOwningPlayer(), EQuitPreference::Quit, true);
 }
