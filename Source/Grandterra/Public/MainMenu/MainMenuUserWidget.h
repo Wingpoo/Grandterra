@@ -71,6 +71,9 @@ public:
 	UFUNCTION()
 	void QuitButtonClicked();
 
+	UFUNCTION()
+	void GoBackButtonClicked();
+
 public:
 	/** Single Player Buttons*/
 
@@ -85,6 +88,19 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* BTN_SP_GoBack;
+
+
+public: 
+	/** Single player Button function calls */
+
+	UFUNCTION()
+	void SinglePlayerNewButtonClicked();
+
+	UFUNCTION()
+	void SinglePlayerContinueButtonClicked();
+
+	UFUNCTION()
+	void SinglePlayerLoadButtonClicked();
 
 public:
 	/** Multiplayer Buttons*/
@@ -105,8 +121,61 @@ public:
 	UButton* BTN_MP_GoBack;
 
 public:
+	/** Multiplayer Button Function Calls */
+
+	UFUNCTION()
+	void MultiplayerNewButtonClicked();
+
+	UFUNCTION()
+	void MultiplayerContinueButtonClicked();
+
+	UFUNCTION()
+	void MultiplayerLoadButtonClicked();
+
+	UFUNCTION()
+	void MultiplayerJoinButtonClicked();
+
+
+public:
 	/** Options Buttons*/
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* BTN_Options_Keybindings;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* BTN_Options_GameSettings;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* BTN_Options_SystemSettings;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* BTN_Options_GoBack;
+
+public:
+	/** Options Button Function Calls */
+
+	UFUNCTION()
+	void OptionsKeybindingsButtonClicked();
+
+	UFUNCTION()
+	void OptionsGameSettingsButtonClicked();
+
+	UFUNCTION()
+	void OptionsSystemSettingsButtonClicked();
+	
 
 public:
 	/** Quit Buttons*/
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* BTN_Quit_Quit;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* BTN_Quit_GoBack;
+
+public:
+	/** Quit Button Function Calls */
+
+	void QuitQuitButtonClicked();
+
 };

@@ -14,4 +14,6 @@ class GRANDTERRA_API AMainMenuGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+	AMainMenuGameMode();
+
 };

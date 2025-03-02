@@ -14,4 +14,12 @@ class GRANDTERRA_API AMainMenuPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+protected:
+	void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UMainMenuUserWidget> BP_MainMenu;
+
+private:
+	UMainMenuUserWidget* MainMenu;
 };
