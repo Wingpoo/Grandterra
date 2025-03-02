@@ -176,6 +176,7 @@ public:
 public:
 	/** Quit Button Function Calls */
 
+	UFUNCTION()
 	void QuitQuitButtonClicked();
 
 };
