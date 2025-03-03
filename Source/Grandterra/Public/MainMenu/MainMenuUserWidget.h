@@ -21,13 +21,19 @@ class GRANDTERRA_API UMainMenuUserWidget : public UUserWidget
 	GENERATED_BODY()
 	
 protected:
-	virtual void NativeConstruct() override;
+	void NativeConstruct() override;
 
 public:
 	/** WIDGET SWITCHERS */
 	
 	UPROPERTY(meta = (BindWidget))
 	UWidgetSwitcher* WS_Menu;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidgetSwitcher* WS_Popups;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidgetSwitcher* WS_ExtraMenus;
 
 public:
 	/** MAIN MENU BUTTONS */
@@ -162,21 +168,9 @@ public:
 
 	UFUNCTION()
 	void OptionsSystemSettingsButtonClicked();
+
+public:
 	
-
-public:
-	/** Quit Buttons*/
-
-	UPROPERTY(meta = (BindWidget))
-	UButton* BTN_Quit_Quit;
-
-	UPROPERTY(meta = (BindWidget))
-	UButton* BTN_Quit_GoBack;
-
-public:
-	/** Quit Button Function Calls */
-
 	UFUNCTION()
-	void QuitQuitButtonClicked();
-
+	void CloseExtras();
 };

@@ -7,10 +7,10 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/PlayerController.h"
 
+
 void UMainMenuUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
 
 	if (BTN_SinglePlayer) BTN_SinglePlayer->OnClicked.AddDynamic(this, &UMainMenuUserWidget::SinglePlayerButtonClicked); // Single Player
 	if (BTN_Multiplayer) BTN_Multiplayer->OnClicked.AddDynamic(this, &UMainMenuUserWidget::MultiplayerButtonClicked); // Multiplayer
@@ -23,7 +23,6 @@ void UMainMenuUserWidget::NativeConstruct()
 	if (BTN_SP_GoBack) BTN_SP_GoBack->OnClicked.AddDynamic(this, &UMainMenuUserWidget::GoBackButtonClicked);
 	if (BTN_MP_GoBack) BTN_MP_GoBack->OnClicked.AddDynamic(this, &UMainMenuUserWidget::GoBackButtonClicked);
 	if (BTN_Options_GoBack) BTN_Options_GoBack->OnClicked.AddDynamic(this, &UMainMenuUserWidget::GoBackButtonClicked);
-	if (BTN_Quit_GoBack) BTN_Quit_GoBack->OnClicked.AddDynamic(this, &UMainMenuUserWidget::GoBackButtonClicked);
 
 	//Single Player buttons
 	if (BTN_SP_New) BTN_SP_New->OnClicked.AddDynamic(this, &UMainMenuUserWidget::SinglePlayerNewButtonClicked);
@@ -41,41 +40,46 @@ void UMainMenuUserWidget::NativeConstruct()
 	if (BTN_Options_GameSettings) BTN_Options_GameSettings->OnClicked.AddDynamic(this, &UMainMenuUserWidget::OptionsGameSettingsButtonClicked);
 	if (BTN_Options_SystemSettings) BTN_Options_SystemSettings->OnClicked.AddDynamic(this, &UMainMenuUserWidget::OptionsSystemSettingsButtonClicked);
 
-	//Quit
-	if (BTN_Quit_Quit) BTN_Quit_Quit->OnClicked.AddDynamic(this, &UMainMenuUserWidget::QuitQuitButtonClicked);
 }
 
 void UMainMenuUserWidget::SinglePlayerButtonClicked()
 {
 	if (WS_Menu) WS_Menu->SetActiveWidgetIndex(1);
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(0);
 }
 
 void UMainMenuUserWidget::MultiplayerButtonClicked()
 {
 	if (WS_Menu) WS_Menu->SetActiveWidgetIndex(2);
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(0);
 }
 
 void UMainMenuUserWidget::OptionsButtonClicked()
 {
 	if (WS_Menu) WS_Menu->SetActiveWidgetIndex(3);
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(0);
 }
 
 void UMainMenuUserWidget::SubmitFeedbackButtonClicked()
 {
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(2);
 }
 
 void UMainMenuUserWidget::SubmitBugButtonClicked()
 {
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(3);
 }
 
 void UMainMenuUserWidget::QuitButtonClicked()
 {
-	if (WS_Menu) WS_Menu->SetActiveWidgetIndex(4);
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(1);
 }
 
 void UMainMenuUserWidget::GoBackButtonClicked()
 {
 	if (WS_Menu) WS_Menu->SetActiveWidgetIndex(0);
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(0);
+	if (WS_ExtraMenus) WS_ExtraMenus->SetActiveWidgetIndex(0);
 }
 
 void UMainMenuUserWidget::SinglePlayerNewButtonClicked()
@@ -108,18 +112,20 @@ void UMainMenuUserWidget::MultiplayerJoinButtonClicked()
 
 void UMainMenuUserWidget::OptionsKeybindingsButtonClicked()
 {
+	if (WS_ExtraMenus) WS_ExtraMenus->SetActiveWidgetIndex(1);
 }
 
 void UMainMenuUserWidget::OptionsGameSettingsButtonClicked()
 {
+	if (WS_ExtraMenus) WS_ExtraMenus->SetActiveWidgetIndex(2);
 }
 
 void UMainMenuUserWidget::OptionsSystemSettingsButtonClicked()
 {
+	if (WS_ExtraMenus) WS_ExtraMenus->SetActiveWidgetIndex(3);
 }
 
-void UMainMenuUserWidget::QuitQuitButtonClicked()
+void UMainMenuUserWidget::CloseExtras()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Green, "Clicked");
-	UKismetSystemLibrary::QuitGame(GetWorld(), GetOwningPlayer(), EQuitPreference::Quit, true);
+	if (WS_ExtraMenus) WS_ExtraMenus->SetActiveWidgetIndex(0);
 }
