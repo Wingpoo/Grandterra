@@ -30,7 +30,7 @@ void UMainMenuUserWidget::NativeConstruct()
 	if (BTN_SP_Load) BTN_SP_Load->OnClicked.AddDynamic(this, &UMainMenuUserWidget::SinglePlayerLoadButtonClicked);
 
 	//Multiplayer buttons
-	if (BTN_MP_New) BTN_SP_New->OnClicked.AddDynamic(this, &UMainMenuUserWidget::MultiplayerNewButtonClicked);
+	if (BTN_MP_New) BTN_MP_New->OnClicked.AddDynamic(this, &UMainMenuUserWidget::MultiplayerNewButtonClicked);
 	if (BTN_MP_Continue) BTN_MP_Continue->OnClicked.AddDynamic(this, &UMainMenuUserWidget::MultiplayerContinueButtonClicked);
 	if (BTN_MP_Load) BTN_MP_Load->OnClicked.AddDynamic(this, &UMainMenuUserWidget::MultiplayerLoadButtonClicked);
 	if (BTN_MP_Join) BTN_MP_Join->OnClicked.AddDynamic(this, &UMainMenuUserWidget::MultiplayerJoinButtonClicked);
@@ -84,6 +84,7 @@ void UMainMenuUserWidget::GoBackButtonClicked()
 
 void UMainMenuUserWidget::SinglePlayerNewButtonClicked()
 {
+	if (WS_ExtraMenus) WS_Popups->SetActiveWidgetIndex(4);
 }
 
 void UMainMenuUserWidget::SinglePlayerContinueButtonClicked()
@@ -96,6 +97,7 @@ void UMainMenuUserWidget::SinglePlayerLoadButtonClicked()
 
 void UMainMenuUserWidget::MultiplayerNewButtonClicked()
 {
+	if (WS_ExtraMenus) WS_Popups->SetActiveWidgetIndex(5);
 }
 
 void UMainMenuUserWidget::MultiplayerContinueButtonClicked()
@@ -128,4 +130,5 @@ void UMainMenuUserWidget::OptionsSystemSettingsButtonClicked()
 void UMainMenuUserWidget::CloseExtras()
 {
 	if (WS_ExtraMenus) WS_ExtraMenus->SetActiveWidgetIndex(0);
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(0);
 }
