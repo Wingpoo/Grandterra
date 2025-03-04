@@ -23,12 +23,6 @@ class GRANDTERRA_API UWidgetNewGame : public UUserWidget
 	UPROPERTY()
 	UMainMenuUserWidget* ParentWidget;
 
-protected:
-
-	//set to 0 for SP, 2 for MP
-	UPROPERTY(BlueprintReadWrite)
-	int32 Type;
-
 
 public:
 	void NativeConstruct() override;
@@ -50,5 +44,8 @@ public:
 
 	UFUNCTION()
 	void MPAcceptButtonClicked();
+
+	UFUNCTION()
+	void NewGameNameChanged(const FText& Text);
 
 };
