@@ -23,6 +23,11 @@ class GRANDTERRA_API UWidgetNewGame : public UUserWidget
 	UPROPERTY()
 	UMainMenuUserWidget* ParentWidget;
 
+	class UMultiplayerSubsystem* MultiplayerSubsystem;
+
+	void BindButtons();
+
+	FString CheckSessionName();
 
 public:
 	void NativeConstruct() override;

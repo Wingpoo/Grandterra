@@ -5,11 +5,26 @@
 #include "Components/Button.h"
 #include "Components/EditableTextBox.h"
 #include "MainMenu/MainMenuUserWidget.h"
+#include "Multiplayer/MultiplayerSubsystem.h"
 
 void UWidgetNewGame::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	BindButtons();
+
+	MultiplayerSubsystem = GetGameInstance()->GetSubsystem<UMultiplayerSubsystem>();
+
+	if (ETB_NewGameName) ETB_NewGameName->OnTextChanged.AddDynamic(this, &UWidgetNewGame::NewGameNameChanged);
+
+	if (BTN_Cancel) BTN_Cancel->OnClicked.AddDynamic(this, &UWidgetNewGame::CancelButtonClicked);
+
+	ParentWidget = GetTypedOuter<UMainMenuUserWidget>();
+
+}
+
+void UWidgetNewGame::BindButtons()
+{
 	FString ThisThingsName;
 	GetName(ThisThingsName);
 
@@ -26,13 +41,14 @@ void UWidgetNewGame::NativeConstruct()
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "The Button you just clicked should be in a widget placed in the widget switcher");
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "And should be named 4_SPNewGame for single player and 5_MPNewGame for multiplayer");
 	}
+}
 
-	if (ETB_NewGameName) ETB_NewGameName->OnTextChanged.AddDynamic(this, &UWidgetNewGame::NewGameNameChanged);
+FString UWidgetNewGame::CheckSessionName()
+{
+	FString SessionName = ETB_NewGameName->GetText().ToString();
+	if (SessionName.IsEmpty()) return FString();
 
-	if (BTN_Cancel) BTN_Cancel->OnClicked.AddDynamic(this, &UWidgetNewGame::CancelButtonClicked);
-
-	ParentWidget = GetTypedOuter<UMainMenuUserWidget>();
-
+	return SessionName;
 }
 
 void UWidgetNewGame::CancelButtonClicked()
@@ -46,6 +62,13 @@ void UWidgetNewGame::SPAcceptButtonClicked()
 
 void UWidgetNewGame::MPAcceptButtonClicked()
 {
+	if (!MultiplayerSubsystem){ GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Red, "No Multiplayer Subsystem Found"); return; }
+	
+	FString SessionName = CheckSessionName();
+
+	if (SessionName.IsEmpty()) { GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Red, "Game Name can not be empty"); return; }
+
+	MultiplayerSubsystem->CreateSession(SessionName);
 }
 
 void UWidgetNewGame::NewGameNameChanged(const FText& Text)
