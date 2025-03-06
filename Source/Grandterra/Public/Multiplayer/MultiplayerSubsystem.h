@@ -12,7 +12,7 @@
 
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FCreateSessionDelegate, bool);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FFindSessionDelegate, bool, const TArray<FOnlineSessionSearchResult>&);
+DECLARE_MULTICAST_DELEGATE_OneParam(FFindSessionDelegate, TArray<FOnlineSessionSearchResult>);
 DECLARE_MULTICAST_DELEGATE_OneParam(FJoinSessionDelegate, bool);
 
 UCLASS()
@@ -33,7 +33,7 @@ public:
 	void Deinitialize() override;
 
 	void CreateSession(FString SessionName);
-	void FindSessions();
+	void FindSessions(FString SessionName);
 	void JoinSession(const FOnlineSessionSearchResult& SessionResult);
 
 	FCreateSessionDelegate OnCreateSessionComplete;
@@ -48,5 +48,7 @@ protected:
 
 private:
 	IOnlineSessionPtr SessionInterface;
-	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+	const TSharedPtr<FOnlineSessionSearch>& SessionSearch = MakeShareable(new FOnlineSessionSearch());
+
+	TArray<FOnlineSessionSearchResult> SearchResults;
 };
