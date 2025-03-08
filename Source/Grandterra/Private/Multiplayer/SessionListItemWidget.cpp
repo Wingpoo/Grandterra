@@ -18,25 +18,19 @@ void USessionListItemWidget::NativeConstruct()
 
 void USessionListItemWidget::JoinButtonClicked()
 {
-	if (!SessionResult.IsValid()) GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Red, "Session Result is Invalid");
-
 	UMultiplayerSubsystem* MPSS = GetGameInstance()->GetSubsystem<UMultiplayerSubsystem>();
-	if (MPSS) MPSS->JoinSession(SessionResult);
+	if (MPSS) MPSS->JoinSessionIndex(SessionResultIndex);
 }
 
-void USessionListItemWidget::SetupText()
+void USessionListItemWidget::SetupText(FText SessionName, FText HostName)
 {
 	if (TXT_HostName) TXT_HostName->SetText(HostName);
-	if (TXT_SessionName) TXT_SessionName->SetText(FText::FromString(SessionName));
+	if (TXT_SessionName) TXT_SessionName->SetText(SessionName);
 }
 
-void USessionListItemWidget::SetupSessionResult(USessionBrowserWidget* Parent, FOnlineSessionSearchResult Session)
+void USessionListItemWidget::SetupSessionResult(USessionBrowserWidget* Parent, int Index)
 {
 	ParentWidget = Parent;
 
-	SessionResult = Session;
-
-
-	SessionResult.Session.SessionSettings.Get("SESSION_NAME", SessionName);
-	HostName = FText::FromString(SessionResult.Session.OwningUserName);
+	SessionResultIndex = Index;
 }

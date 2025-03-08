@@ -26,16 +26,26 @@ void USessionBrowserWidget::CreateList(TArray<FOnlineSessionSearchResult> Result
 
 	if (!LIST_SessionList) return;
 
+	LIST_SessionList->ClearListItems();
+
 	SessionResults = Results;
+
+	int Index = 0;
 
 	for (FOnlineSessionSearchResult Result : SessionResults)
 	{
 		USessionListItemWidget* NewItem = CreateWidget<USessionListItemWidget>(this, USessionListItemWidget::StaticClass());
 		if (NewItem)
 		{
+			FText HostName = FText::FromString(Result.Session.OwningUserName);
+			FString SessionNameStr;
+			Result.Session.SessionSettings.Get("SESSION_NAME", SessionNameStr);
+			FText SessionName = FText::FromString(SessionNameStr);
+
 			LIST_SessionList->AddItem(NewItem);
-			NewItem->SetupSessionResult(this, Result);
-			NewItem->SetupText();
+			NewItem->SetupSessionResult(this, Index);
+			NewItem->SetupText(SessionName, HostName);
+			Index++;
 		}
 	}
 }

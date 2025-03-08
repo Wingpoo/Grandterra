@@ -34,6 +34,7 @@ public:
 
 	void CreateSession(FString SessionName);
 	void FindSessions(FString SessionName);
+	void JoinSessionIndex(int Index);
 	void JoinSession(const FOnlineSessionSearchResult& SessionResult);
 
 	FCreateSessionDelegate OnCreateSessionComplete;

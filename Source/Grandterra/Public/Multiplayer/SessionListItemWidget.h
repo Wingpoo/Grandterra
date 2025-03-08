@@ -40,12 +40,10 @@ public:
 	void JoinButtonClicked();
 
 	UFUNCTION()
-	void SetupText();
+	void SetupText(FText SessionName, FText HostName);
 
-	void SetupSessionResult(USessionBrowserWidget* Parent, FOnlineSessionSearchResult Session);
+	void SetupSessionResult(USessionBrowserWidget* Parent, int Index);
 
-	FOnlineSessionSearchResult SessionResult;
+	int SessionResultIndex;
 
-	FString SessionName;
-	FText HostName;
 };

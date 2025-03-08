@@ -157,6 +157,13 @@ void UMultiplayerSubsystem::FindSessions(FString SessionName)
 	if (!InnerSuccess) bIsSearchingSessions = false;
 }
 
+void UMultiplayerSubsystem::JoinSessionIndex(int Index)
+{
+	if (!SearchResults[Index].IsValid()) { GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Session is no longer valid"); return; }
+
+	JoinSession(SearchResults[Index]);
+}
+
 void UMultiplayerSubsystem::OnFindSessionsCompleteCallback(bool bWasSuccessful)
 {
 	bIsSearchingSessions = false;
@@ -170,9 +177,7 @@ void UMultiplayerSubsystem::OnFindSessionsCompleteCallback(bool bWasSuccessful)
 			/*JoinSession(Result);
 			break;*/
 
-			FOnlineSessionSearchResult ResultCopy = Result;
-
-			SearchResults.Add(ResultCopy);
+			SearchResults.Add(Result);
 		}
 	}
 	else
@@ -200,6 +205,7 @@ void UMultiplayerSubsystem::JoinSession(const FOnlineSessionSearchResult& Sessio
 	if (IOnlineSubsystem::Get()->GetSubsystemName().ToString() == "NULL")
 	{
 		SessionInterface->JoinSession(*UserID, NAME_GameSession, SessionResult);
+		GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Green, "Attempting to join game on NULL Subsystem");
 	}
 	else
 	{
