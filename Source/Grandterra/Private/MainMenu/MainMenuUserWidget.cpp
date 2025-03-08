@@ -97,7 +97,9 @@ void UMainMenuUserWidget::SinglePlayerLoadButtonClicked()
 
 void UMainMenuUserWidget::MultiplayerNewButtonClicked()
 {
-	if (WS_ExtraMenus) WS_Popups->SetActiveWidgetIndex(5);
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(5);
+	if (WS_ExtraMenus) WS_ExtraMenus->SetActiveWidgetIndex(0);
+
 }
 
 void UMainMenuUserWidget::MultiplayerContinueButtonClicked()
@@ -110,6 +112,8 @@ void UMainMenuUserWidget::MultiplayerLoadButtonClicked()
 
 void UMainMenuUserWidget::MultiplayerJoinButtonClicked()
 {
+	if (WS_ExtraMenus) WS_ExtraMenus->SetActiveWidgetIndex(4);
+	if (WS_Popups) WS_Popups->SetActiveWidgetIndex(0);
 }
 
 void UMainMenuUserWidget::OptionsKeybindingsButtonClicked()

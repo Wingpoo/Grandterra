@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "OnlineSessionSettings.h"
+#include "Blueprint/IUserObjectListEntry.h"
 #include "SessionListItemWidget.generated.h"
 
 /**
@@ -16,14 +17,13 @@ class UTextBlock;
 class USessionBrowserWidget;
 
 UCLASS()
-class GRANDTERRA_API USessionListItemWidget : public UUserWidget
+class GRANDTERRA_API USessionListItemWidget : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 
 	USessionBrowserWidget* ParentWidget;
 
-	FOnlineSessionSearchResult SessionResult;
-	
+
 public:
 	void NativeConstruct() override;
 
@@ -39,6 +39,13 @@ public:
 	UFUNCTION()
 	void JoinButtonClicked();
 
-	void Setup(USessionBrowserWidget* Parent, FOnlineSessionSearchResult Session);
+	UFUNCTION()
+	void SetupText();
 
+	void SetupSessionResult(USessionBrowserWidget* Parent, FOnlineSessionSearchResult Session);
+
+	FOnlineSessionSearchResult SessionResult;
+
+	FString SessionName;
+	FText HostName;
 };

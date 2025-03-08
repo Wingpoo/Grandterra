@@ -40,6 +40,8 @@ public:
 	FFindSessionDelegate OnFindSessionComplete;
 	FJoinSessionDelegate OnJoinSessionComplete;
 
+	TArray<FOnlineSessionSearchResult> SearchResults;
+
 protected:
 	void OnCreateSessionCompleteCallback(FName SessionName, bool bWasSuccessful);
 	void OnFindSessionsCompleteCallback(bool bWasSuccessful);
@@ -50,5 +52,4 @@ private:
 	IOnlineSessionPtr SessionInterface;
 	const TSharedPtr<FOnlineSessionSearch>& SessionSearch = MakeShareable(new FOnlineSessionSearch());
 
-	TArray<FOnlineSessionSearchResult> SearchResults;
 };

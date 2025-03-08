@@ -21,6 +21,7 @@ void UMultiplayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UMultiplayerSubsystem::OnCreateSessionCompleteCallback);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UMultiplayerSubsystem::DestroySessionCompleteCallback);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UMultiplayerSubsystem::OnFindSessionsCompleteCallback);
+			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UMultiplayerSubsystem::OnJoinSessionCompleteCallback);
 		}
 	}
 
@@ -160,25 +161,84 @@ void UMultiplayerSubsystem::OnFindSessionsCompleteCallback(bool bWasSuccessful)
 {
 	bIsSearchingSessions = false;
 
+	SearchResults.Empty();
+
 	if (bWasSuccessful && SessionSearch->SearchResults.Num() > 0)
 	{
 		for (const FOnlineSessionSearchResult& Result : SessionSearch->SearchResults)
 		{
-			SearchResults.Add(Result);
-		}
+			/*JoinSession(Result);
+			break;*/
 
-		OnFindSessionComplete.Broadcast(SearchResults);
+			FOnlineSessionSearchResult ResultCopy = Result;
+
+			SearchResults.Add(ResultCopy);
+		}
 	}
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, "Couldn't find any sessions");
 	}
+
+	OnFindSessionComplete.Broadcast(SearchResults);
+
 }
 
 void UMultiplayerSubsystem::JoinSession(const FOnlineSessionSearchResult& SessionResult)
 {
+	if (!SessionResult.IsValid()) return;
+	
+	ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	if (!LocalPlayer) return;
+	GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Green, "LocalPlayer Found");
+
+
+	FUniqueNetIdRepl UserID = LocalPlayer->GetPreferredUniqueNetId();
+	if (!UserID.IsValid()) return;
+	GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Green, "UserID Found");
+
+	if (IOnlineSubsystem::Get()->GetSubsystemName().ToString() == "NULL")
+	{
+		SessionInterface->JoinSession(*UserID, NAME_GameSession, SessionResult);
+	}
+	else
+	{
+		FString SessionName;
+		SessionResult.Session.SessionSettings.Get("SESSION_NAME", SessionName);
+
+		SessionInterface->JoinSession(*UserID, FName(SessionName), SessionResult);
+	}
+
 }
 
 void UMultiplayerSubsystem::OnJoinSessionCompleteCallback(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
 {
+	if (Result == EOnJoinSessionCompleteResult::Success)
+	{
+		FString Address = "";
+		if (SessionInterface->GetResolvedConnectString(SessionName, Address))
+		{
+			APlayerController* PC = GetWorld()->GetFirstPlayerController();
+			if (PC)
+			{
+				PC->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+				PC->SetInputMode(FInputModeGameOnly());
+				PC->SetShowMouseCursor(false);
+			}
+			else
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Green, "PC Not Found");
+			}
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Green, "GetResolvedConnectString Failed");
+		}
+		
+	}
+	else
+	{
+
+		GEngine->AddOnScreenDebugMessage(-1, 15, FColor::Green, "JoinSessionFailed");
+	}
 }
